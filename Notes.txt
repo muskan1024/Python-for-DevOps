@@ -37,7 +37,7 @@ type casting means converting one data type into another.
 what are conditional statements?
 Conditional statements are used to make decisions based on conditions (true or false). They help your program choose what to do next based on a condition.
 
-if/else conmdtion:
+if/else condition:
 if/else condition is used to choose between two actions. If condition is true → do one thing, otherwise → do another thing.
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
