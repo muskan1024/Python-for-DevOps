@@ -48,3 +48,7 @@ Array → similar to a list but usually stores same-type data and needs librarie
 
 append() → adds an item at the end of the list
 insert() → adds an item at a specific position
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+what is iteration of list?
+
+Iteration means repeating steps over items one by one. Iteration means going through each item in a list one by one.
