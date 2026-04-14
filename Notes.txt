@@ -46,3 +46,5 @@ what is arrray and list?
 List → a collection of items that can be changed and store multiple type data
 Array → similar to a list but usually stores same-type data and needs libraries like NumPy
 
+append() → adds an item at the end of the list
+insert() → adds an item at a specific position
