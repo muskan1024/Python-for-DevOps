@@ -41,3 +41,8 @@ if/else condition:
 if/else condition is used to choose between two actions. If condition is true → do one thing, otherwise → do another thing.
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+what is arrray and list?
+List → a collection of items that can be changed and store multiple type data
+Array → similar to a list but usually stores same-type data and needs libraries like NumPy
+
