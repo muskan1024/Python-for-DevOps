@@ -1,4 +1,4 @@
-DAY01
+PYTHON NOTES
 -------------------
 variable : A variable in Python is a named container used to store data that can be changed during program execution.
 --------------------------------------------
@@ -17,7 +17,7 @@ a and b are operands and + is a operator
 --------------------------------------------
 Data Types: In Python, data types are the types of values a variable can store (like numbers, text, or true/false).
 --------------------------------------------
-how many data types are there in python:
+data types are there in python:
 
 🔹 Basic Data Types
 int → whole numbers (e.g., 10, -5)
