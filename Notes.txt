@@ -48,7 +48,22 @@ Array → similar to a list but usually stores same-type data and needs librarie
 
 append() → adds an item at the end of the list
 insert() → adds an item at a specific position
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
 what is iteration of list?
 
 Iteration means repeating steps over items one by one. Iteration means going through each item in a list one by one.
+----------------------------------------------------------------------------------------------------------------------
+
+What are Library?
+libraries are collections of pre-written code that help you do tasks easily. Libraries are ready-made tools that you can use instead of writing code from scratch.
+----------------------------------------------------------------------------------------------------------------------
+Few useful python libraries for devops:
+
+os → used to interact with the operating system (files, folders, paths)
+👉 create/delete folders, check files, get current directory
+
+shutil → used for file operations like copy, move, delete
+👉 copy files, move files, delete folders
+
+system (os.system) → used to run system commands (like terminal commands)
+👉 like running mkdir, dir, ls, etc.
