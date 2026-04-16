@@ -67,3 +67,20 @@ shutil → used for file operations like copy, move, delete
 
 system (os.system) → used to run system commands (like terminal commands)
 👉 like running mkdir, dir, ls, etc.
+
+----------------------------------------------------------------------------------------------------------------------
+Functions in Python
+
+In Python, a function is a block of code that performs a specific task and can be reused whenever needed.
+
+🔹 What is a Function?
+A function is used to group some code together so you can run it many times without rewriting it.
+
+Why Do We Use Functions?
+Functions are useful because they:
+Avoid repeating code (write once, use many times)
+Make programs shorter and cleaner
+Make code easier to understand
+Help divide big programs into small parts
+
+----------------------------------------------------------------------------------------------------------------------
