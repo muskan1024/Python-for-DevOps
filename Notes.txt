@@ -82,5 +82,4 @@ Avoid repeating code (write once, use many times)
 Make programs shorter and cleaner
 Make code easier to understand
 Help divide big programs into small parts
-
 ----------------------------------------------------------------------------------------------------------------------
