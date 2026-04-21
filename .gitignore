@@ -1,0 +1,25 @@
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+terraform.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+SSH Keys - NEVER commit private keys
+*.pem
+*.pub
+
+Python
+pycache/
+*.py[cod]
+*.pyo
+.env
+venv/
+.venv/
+
+AWS credentials - NEVER commit these
+.aws/
+credentials
