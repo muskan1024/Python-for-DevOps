@@ -7,7 +7,6 @@ app = Flask(__name__)
 def index():
     cpu_percent = psutil.cpu_percent(interval=0.5)
     mem_percent = psutil.virtual_memory().percent
-    print(psutil.cpu_count)
     message = None
     if cpu_percent > 80 or mem_percent > 80:
         message = "High CPU or memory utilization detected!"
