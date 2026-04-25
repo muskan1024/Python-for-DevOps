@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
-    <!-- <meta http-equiv="refresh" content="5"> -->
+    <meta http-equiv="refresh" content="5">
     <title>System Monitoring</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
@@ -76,4 +76,535 @@
         Plotly.newPlot('mem-gauge', [memGauge], memGaugeLayout);
     </script>
 </body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>System Monitor</title>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=IBM+Plex+Mono:wght@400&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+
+            --bg: #060b14;
+            --card: #0c1426;
+            --border: #18243f;
+
+            --cyan: #00e5ff;
+            --green: #00ff88;
+            --purple: #bf5af2;
+            --amber: #ffaa00;
+
+            --text: #b0c4de;
+
+        }
+
+        body {
+
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Mono', monospace;
+
+        }
+
+        header {
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 22px 28px;
+
+            border-bottom: 1px solid var(--border);
+
+        }
+
+        h1 {
+
+            font-family: 'Orbitron';
+            color: var(--cyan);
+
+            font-size: 1.4rem;
+            letter-spacing: 0.18em;
+
+        }
+
+        .page {
+
+            max-width: 1500px;
+            margin: auto;
+            padding: 20px;
+
+        }
+
+        .gauge-grid {
+
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+
+            gap: 16px;
+            margin-bottom: 20px;
+
+        }
+
+        .card {
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 8px;
+
+            padding: 14px;
+
+        }
+
+        .label {
+
+            font-size: 0.65rem;
+            color: #3d5070;
+            letter-spacing: 0.14em;
+
+            margin-bottom: 6px;
+
+        }
+
+        .value {
+
+            font-family: 'Orbitron';
+
+            font-size: 1.6rem;
+
+            margin-bottom: 4px;
+
+        }
+
+        .cpu {
+            color: var(--cyan);
+        }
+
+        .mem {
+            color: var(--purple);
+        }
+
+        .disk {
+            color: #6366f1;
+        }
+
+        .gpu {
+            color: var(--green);
+        }
+
+        .temp {
+            color: var(--amber);
+        }
+
+        .gauge {
+
+            height: 180px;
+
+        }
+
+        .bottom {
+
+            display: grid;
+
+            grid-template-columns: 2fr 1fr;
+
+            gap: 16px;
+
+        }
+
+        @media(max-width:900px) {
+
+            .bottom {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        .net-big {
+
+            font-family: 'Orbitron';
+            font-size: 2rem;
+
+        }
+
+        .download {
+            color: var(--green);
+        }
+
+        .upload {
+            color: var(--cyan);
+        }
+
+        #net-graph {
+
+            height: 220px;
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>System Monitor</h1>
+
+        <div>LIVE</div>
+
+    </header>
+
+    <div class="page">
+
+        <div class="gauge-grid">
+
+            <div class="card">
+                <div class="label">CPU Usage</div>
+                <div class="value cpu" id="cpu-val">{{ cpu_percent }}%</div>
+                <div class="gauge" id="cpu-gauge"></div>
+            </div>
+
+            <div class="card">
+                <div class="label">Memory Usage</div>
+                <div class="value mem" id="mem-val">{{ mem_percent }}%</div>
+                <div class="gauge" id="mem-gauge"></div>
+            </div>
+
+            <div class="card">
+                <div class="label">Disk Usage</div>
+                <div class="value disk" id="disk-val">{{ disk_percent }}%</div>
+                <div class="gauge" id="disk-gauge"></div>
+            </div>
+
+            <div class="card">
+                <div class="label">GPU Usage</div>
+                <div class="value gpu" id="gpu-val">{{ gpu_percent }}%</div>
+                <div class="gauge" id="gpu-gauge"></div>
+            </div>
+
+            <div class="card">
+                <div class="label">GPU Temperature</div>
+                <div class="value temp" id="gtemp-val">{{ gpu_temp }}°C</div>
+                <div class="gauge" id="gtemp-gauge"></div>
+            </div>
+
+        </div>
+
+        <div class="bottom">
+
+            <div class="card">
+
+                <div class="label">Network Speed</div>
+
+                <div>
+
+                    <span class="net-big download" id="net-recv-val">{{ net_recv }}</span>
+
+                    <span>MB/s ↓</span>
+
+                </div>
+
+                <div>
+
+                    <span class="net-big upload" id="net-sent-val">{{ net_sent }}</span>
+
+                    <span>MB/s ↑</span>
+
+                </div>
+
+                <div id="net-graph"></div>
+
+            </div>
+
+            <div class="card">
+
+                <div class="label">Disk Info</div>
+
+                <div class="value disk" id="disk-used-val">{{ disk_used }}</div>
+
+                <div>Total:
+                    <span id="disk-total-val">{{ disk_total }}</span> GB
+                </div>
+
+                <div>Free:
+                    <span id="disk-free-val">{{ disk_free }}</span> GB
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        /* Gauge Creator */
+
+        function makeGauge(value, color, max = 100) {
+
+            return [{
+
+                type: "indicator",
+                mode: "gauge+number",
+
+                value: value,
+
+                number: { font: { size: 20 } },
+
+                gauge: {
+
+                    axis: { range: [0, max], tickcolor: '#162035', tickfont: { size: 10 }, nticks: 6 },
+
+                    bar: { color: color },
+
+                    steps: [
+
+                        { range: [0, max * 0.5], color: "rgba(255,255,255,0.03)" },
+                        { range: [max * 0.5, max * 0.85], color: "rgba(255,170,0,0.08)" },
+                        { range: [max * 0.85, max], color: "rgba(255,45,85,0.12)" }
+
+                    ]
+
+                }
+
+            }];
+
+        }
+
+        var layout = {
+
+            margin: { t: 10, b: 10, l: 20, r: 24 },
+
+            paper_bgcolor: "rgba(0,0,0,0)",
+
+            font: { color: "#3d5070" }
+
+        };
+
+        var config = { displayModeBar: false, responsive: true };
+
+
+        /* Initial Gauges */
+
+        Plotly.newPlot('cpu-gauge',
+            makeGauge({{ cpu_percent }}, '#00e5ff'),
+            layout, config);
+
+        Plotly.newPlot('mem-gauge',
+            makeGauge({{ mem_percent }}, '#bf5af2'),
+            layout, config);
+
+        Plotly.newPlot('disk-gauge',
+            makeGauge({{ disk_percent }}, '#6366f1'),
+            layout, config);
+
+        Plotly.newPlot('gpu-gauge',
+            makeGauge({{ gpu_percent }}, '#00ff88'),
+            layout, config);
+
+        Plotly.newPlot('gtemp-gauge',
+            makeGauge({{ gpu_temp }}, '#ffaa00', 120),
+            layout, config);
+
+
+
+        /* NETWORK GRAPH */
+
+        var MAX_POINTS = 40;
+
+        var times = [];
+        var recv = [];
+        var sent = [];
+
+        var now = new Date();
+
+        times.push(now);
+        recv.push({{ net_recv }});
+        sent.push({{ net_sent }});
+
+        var traces = [
+
+            {
+
+                x: times,
+                y: recv,
+
+                name: "Download Speed",
+
+                type: "scatter",
+
+                mode: "lines",
+
+                line: {
+                    color: "#00ff88",
+                    width: 3
+                },
+
+                fill: "tozeroy",
+
+                fillcolor: "rgba(0,255,136,0.05)"
+
+            },
+
+            {
+
+                x: times,
+                y: sent,
+
+                name: "Upload Speed",
+
+                type: "scatter",
+
+                mode: "lines",
+
+                line: {
+                    color: "#00e5ff",
+                    width: 3
+                },
+
+                fill: "tozeroy",
+
+                fillcolor: "rgba(0,229,255,0.04)"
+
+            }
+
+        ];
+
+
+        var netLayout = {
+
+            paper_bgcolor: "rgba(0,0,0,0)",
+
+            plot_bgcolor: "rgba(0,0,0,0)",
+
+            margin: { t: 10, b: 30, l: 50, r: 10 },
+
+            xaxis: {
+
+                type: "date",
+
+                showgrid: false,
+
+                zeroline: false,
+
+                showline: true,
+
+                linecolor: "#162035"
+
+            },
+
+            yaxis: {
+
+                showgrid: false,
+
+                zeroline: false,
+
+                showline: true,
+
+                linecolor: "#162035",
+
+                rangemode: "tozero",
+
+                range: [0, 5],   /* ensures graph always visible */
+
+                ticksuffix: " MB/s"
+
+            },
+
+            legend: {
+
+                orientation: "h",
+
+                x: 1,
+
+                xanchor: "right",
+
+                y: 1
+
+            }
+
+        };
+
+
+        Plotly.newPlot(
+            "net-graph",
+            traces,
+            netLayout,
+            config
+        );
+
+
+        /* LIVE UPDATE */
+
+        function refresh() {
+
+            fetch("/stats")
+
+                .then(r => r.json())
+
+                .then(d => {
+
+                    Plotly.update('cpu-gauge', { value: [d.cpu_percent] });
+                    Plotly.update('mem-gauge', { value: [d.mem_percent] });
+                    Plotly.update('disk-gauge', { value: [d.disk_percent] });
+                    Plotly.update('gpu-gauge', { value: [d.gpu_percent] });
+                    Plotly.update('gtemp-gauge', { value: [d.gpu_temp] });
+
+                    document.getElementById("cpu-val").textContent = d.cpu_percent + "%";
+                    document.getElementById("mem-val").textContent = d.mem_percent + "%";
+                    document.getElementById("disk-val").textContent = d.disk_percent + "%";
+                    document.getElementById("gpu-val").textContent = d.gpu_percent + "%";
+                    document.getElementById("gtemp-val").textContent = d.gpu_temp + "°C";
+
+                    document.getElementById("net-recv-val").textContent = d.net_recv;
+                    document.getElementById("net-sent-val").textContent = d.net_sent;
+
+                    document.getElementById("disk-used-val").textContent = d.disk_used;
+                    document.getElementById("disk-total-val").textContent = d.disk_total;
+                    document.getElementById("disk-free-val").textContent = d.disk_free;
+
+                    var t = new Date();
+
+                    times.push(t);
+                    recv.push(d.net_recv);
+                    sent.push(d.net_sent);
+
+                    if (times.length > MAX_POINTS) {
+
+                        times.shift();
+                        recv.shift();
+                        sent.shift();
+
+                    }
+
+                    Plotly.update("net-graph", {
+
+                        x: [times, times],
+                        y: [recv, sent]
+
+                    });
+
+                });
+
+        }
+
+        setInterval(refresh, 3000);
+
+    </script>
+
+</body>
+
 </html>
