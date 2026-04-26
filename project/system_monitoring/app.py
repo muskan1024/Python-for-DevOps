@@ -184,7 +184,7 @@ def get_network_speed():
 
 def collect_stats():
 
-    cpu_percent = psutil.cpu_percent(interval=None)
+    cpu_percent = psutil.cpu_percent(interval=1)
 
     mem_percent = psutil.virtual_memory().percent
 
